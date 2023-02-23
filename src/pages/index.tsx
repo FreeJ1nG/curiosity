@@ -67,6 +67,10 @@ export default function Home() {
   }[readyState];
 
   const handleCloseSnackbar = () => setNotification(undefined);
+  const handleSendMessage = () => {
+    sendMessage(message);
+    setMessage("");
+  };
 
   return (
     <>
@@ -110,14 +114,15 @@ export default function Home() {
               onChange={(event) => setMessage(event.target.value)}
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
-                  sendMessage(message);
-                  setMessage("");
+                  handleSendMessage();
                 }
               }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <SendIcon />
+                    <IconButton color="primary" onClick={handleSendMessage}>
+                      <SendIcon />
+                    </IconButton>
                   </InputAdornment>
                 ),
               }}
