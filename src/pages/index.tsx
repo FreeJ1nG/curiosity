@@ -83,7 +83,7 @@ export default function Home() {
         }
         message={notification}
       />
-      <div className="relative flex flex-col h-screen items-center p-8">
+      <div className="relative flex flex-col max-h-[calc(100vh-136px)] h-full overflow-auto items-center p-8">
         <Masonry spacing={4} columns={{ xs: 1, sm: 2, lg: 4 }}>
           {chatHistory.map(({ id, create_date, message, sender }) => (
             <Item key={id}>
@@ -99,28 +99,31 @@ export default function Home() {
             </Item>
           ))}
         </Masonry>
-        <div className="absolute left-8 right-8 bottom-6 sm:bottom-14 flex gap-x-3 max-w-[700px] mx-auto">
-          <TextField
-            fullWidth
-            label="Say Something"
-            variant="filled"
-            value={message}
-            onChange={(event) => setMessage(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                sendMessage(message);
-                setMessage("");
-              }
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SendIcon />
-                </InputAdornment>
-              ),
-            }}
-            placeholder="Feel free to ask any questions!"
-          />
+        <div className="fixed left-0 right-0 bottom-0 bg-pink-200 p-4 py-10">
+          <div className="flex gap-x-3 max-w-[700px] mx-auto">
+            <TextField
+              fullWidth
+              color="error"
+              label="Say Something"
+              variant="filled"
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  sendMessage(message);
+                  setMessage("");
+                }
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <SendIcon />
+                  </InputAdornment>
+                ),
+              }}
+              placeholder="Feel free to ask any questions!"
+            />
+          </div>
         </div>
       </div>
     </>
