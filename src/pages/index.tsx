@@ -69,7 +69,7 @@ export default function Home() {
   const handleCloseSnackbar = () => setNotification(undefined);
 
   return (
-    <div className="font-poppins">
+    <>
       <Snackbar
         open={Boolean(notification)}
         autoHideDuration={6000}
@@ -88,13 +88,13 @@ export default function Home() {
           {chatHistory.map(({ id, create_date, message, sender }) => (
             <Item key={id}>
               <Stack spacing={1}>
-                <Typography variant="h5">{sender}</Typography>
-                <Typography overflow="auto" variant="h6">
-                  {message}
-                </Typography>
-                <Typography variant="caption">
+                <div className="flex justify-end font-poppins text-xs">
                   <Moment fromNow>{create_date}</Moment>
-                </Typography>
+                </div>
+                <div className="font-montserrat text-2xl font-semibold">
+                  {sender}
+                </div>
+                <div className="font-montserrat text-xl">{message}</div>
               </Stack>
             </Item>
           ))}
@@ -123,6 +123,6 @@ export default function Home() {
           />
         </div>
       </div>
-    </div>
+    </>
   );
 }
