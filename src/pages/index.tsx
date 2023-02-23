@@ -109,6 +109,7 @@ export default function Home() {
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 sendMessage(message);
+                setMessage("");
               }
             }}
             InputProps={{
