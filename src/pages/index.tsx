@@ -8,13 +8,13 @@ import {
   Stack,
   styled,
   TextField,
-  Typography,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import CloseIcon from "@mui/icons-material/Close";
 import Masonry from "@mui/lab/Masonry";
 import { pink } from "@mui/material/colors";
 import Moment from "react-moment";
+import Cookies from "js-cookie";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: pink[50],
@@ -49,11 +49,11 @@ export default function Home() {
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
   useEffect(() => {
     if (lastMessage !== null) {
-      const message: Chat[] & Message = JSON.parse(lastMessage.data);
-      if (message?.type) {
-        setNotification(message.body);
+      const lastmsg: Chat[] & Message = JSON.parse(lastMessage.data);
+      if (lastmsg?.type) {
+        setNotification(lastmsg.body);
       } else {
-        setChatHistory(message);
+        setChatHistory(lastmsg);
       }
     }
   }, [lastMessage]);
@@ -65,6 +65,15 @@ export default function Home() {
     [ReadyState.CLOSED]: "Closed",
     [ReadyState.UNINSTANTIATED]: "Uninstantiated",
   }[readyState];
+
+  useEffect(() => {
+    if (readyState === ReadyState.OPEN && lastMessage !== null) {
+      const lastmsg: Chat[] & Message = JSON.parse(lastMessage.data);
+      if (lastmsg.sender_username) {
+        Cookies.set("Username", lastmsg.sender_username);
+      }
+    }
+  }, [readyState, lastMessage]);
 
   const handleCloseSnackbar = () => setNotification(undefined);
   const handleSendMessage = () => {
@@ -95,10 +104,12 @@ export default function Home() {
                 <div className="flex justify-end font-poppins text-xs">
                   <Moment fromNow>{create_date}</Moment>
                 </div>
-                <div className="font-montserrat text-2xl font-semibold">
-                  {sender}
+                <div className="font-montserrat text-xl font-semibold">
+                  {`${sender}${
+                    Cookies.get("Username") === sender ? " (You)" : ""
+                  }`}
                 </div>
-                <div className="font-montserrat text-xl">{message}</div>
+                <div className="font-montserrat text-lg">{message}</div>
               </Stack>
             </Item>
           ))}
